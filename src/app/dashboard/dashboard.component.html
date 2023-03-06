@@ -1,0 +1,158 @@
+<!-- <p>dashboard works!</p> -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <h4 class="navbar-brand" routerLink="/dashboard">Emmet Academy ({{userLoggedIn}}) 
+    <!-- <span>({{userLoggedIn === 'HOD'? hodDept : staffDept}})</span> -->
+    <span>(Hello {{userFirstName}} !)</span>
+  </h4>
+  <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button> -->
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <!-- <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="">Link</a>
+      </li>
+    </ul> -->
+  </div>
+  <button routerLink="" type="button" class="btn btn-secondary">Log out</button>
+</nav>
+<ng-container *ngIf="userLoggedIn === 'HOD'">
+  <!-- <p>HOD data</p> -->
+  <div class="row align-items-center justify-content-center vh-100" *ngIf="leaveDataArr.length === 0">
+    <h3>No leave request available</h3>
+  </div>
+  <div class="row my-5" *ngIf="leaveDataArr.length !== 0">
+    <div class="col-md-4" *ngFor="let user of leaveDataArr">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Name : {{user.firstname}} {{user.lastname}}</h5>
+          <h6>Department : {{user.department}}</h6>
+          <p *ngIf="user.fromDate === user.toDate" class="card-text"><strong>Leave for</strong> : {{user.fromDate | date}}</p>
+            <p *ngIf="user.fromDate !== user.toDate" class="card-text"><strong>Leave from</strong> : {{user.fromDate | date}} <strong>to</strong> {{user.toDate | date}}</p>
+            <p class="card-text"><small><strong>No.of days</strong> : {{user.noOfDays}}</small></p>
+            <p><strong>Reason</strong> : {{user.reason}}</p>
+          <!-- <div *ngIf="flag && count == 0">
+            <button type="button" id="approveBtn" class="btn card-buttons btn-success mr-3"
+              (click)="clickApprove(user)">Approve</button>
+            <button type="button" id="rejectBtn" class="btn card-buttons btn-danger"
+              (click)="clickReject(user)">Reject</button>
+          </div>
+          <div *ngIf="user.username === userClicked">
+            <p><small *ngIf="approved" class="text-success"><i class="fas fa-check"></i> Approved</small></p>
+            <p><small *ngIf="rejected" class="text-danger"><i class="fas fa-check"></i> Rejected</small></p>
+          </div> -->
+          <div *ngIf="user.approveCount == 0 && user.rejectCount == 0 ">
+            <button type="button" id="approveBtn" class="btn card-buttons btn-success mr-3"
+              (click)="clickApprove(user)">Approve</button>
+            <button type="button" id="rejectBtn" class="btn card-buttons btn-danger"
+              (click)="clickReject(user)">Reject</button>
+          </div>
+          <div>
+            <p><small *ngIf="user.approveCount > 0" class="text-success"><i class="fas fa-check"></i> Approved</small></p>
+            <p><small *ngIf="user.rejectCount > 0" class="text-danger"><i class="fas fa-check"></i> Rejected</small></p>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+<ng-container *ngIf="userLoggedIn === 'STAFF'">
+  <!-- <p>Staff data</p> -->
+  <div class="row align-items-center justify-content-center vh-100" *ngIf="leaveDataArr.length === 0">
+    <div class="text-center">
+      <h3 class="mb-0">Not applied any leave yet</h3><br>
+      <button type="button" class="btn btn-primary border-dark" data-toggle="modal" data-target="#exampleModal">+ Apply
+        Leave</button>
+    </div>
+  </div>
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Leave details</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="leaveForm" (ngSubmit)="onLeaveFormSubmit()">
+            <div class="form-row">
+              <div class="col-sm-6 text-left form-group">
+                <label for="fromDate">From</label>
+              </div>
+              <div class="col-sm-6 text-left form-group">
+                <label for="toDate">To</label>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col-sm-6 form-group">
+                <input type="date" class="form-control" id="fromDate" formControlName="startDateLeave">
+              </div>
+              <div class="col-sm-6 form-group">
+                <input type="date" class="form-control" id="toDate" formControlName="endDateLeave">
+              </div>
+              <div class="col-sm-6 text-left form-group">
+                <label for="reason">Reason</label>
+              </div>
+              <div class="col-sm-12 form-group">
+                <textarea id="reason" class="w-100" rows="5" formControlName="reasonforLeave"></textarea>
+              </div>
+              <div class="col-sm-12 form-group text-right">
+              <button type="button" class="btn btn-secondary mr-2" data-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-success">Submit</button>
+            </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12 my-4">
+      <button type="button" class="btn btn-primary border-dark" data-toggle="modal" data-target="#exampleModal">+ Apply
+        Leave</button>
+    </div>
+    <div class="col-md-12 mb-3">
+      <div class="row">
+        <div class="col-md-3 text-center">
+          <h3>{{totalLeaves}}</h3>
+          <p>Total leaves</p>
+        </div>
+        <div class="col-md-3 text-center">
+          <h3>{{approvedL}}</h3>
+          <p>Approved</p>
+        </div>
+        <div class="col-md-3 text-center">
+          <h3>{{rejectedL}}</h3>
+          <p>Rejected</p>
+        </div>
+        <div class="col-md-3 text-center">
+          <h3>{{pendingL}}</h3>
+          <p>Pending</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4" *ngFor="let leaveData of leaveDataArr">
+        <div class="card">
+          <div class="card-body">
+            <h5><strong>Name : </strong><em>{{leaveData.firstname}}</em></h5>
+            <p *ngIf="leaveData.fromDate === leaveData.toDate" class="card-text"><strong>Leave for</strong> : {{leaveData.fromDate | date}}</p>
+            <p *ngIf="leaveData.fromDate !== leaveData.toDate" class="card-text"><strong>Leave from</strong> : {{leaveData.fromDate | date}} <strong>to</strong> {{leaveData.toDate | date}}</p>
+            <p class="card-text"><small><strong>No.of days</strong> : {{leaveData.noOfDays}}</small></p>
+            <p><strong>Reason</strong> : {{leaveData.reason}}</p>
+            <p><strong>Status</strong> : {{leaveData.status}}</p>
+          </div>
+        </div>
+    </div>
+  </div>
+
+</ng-container>
+

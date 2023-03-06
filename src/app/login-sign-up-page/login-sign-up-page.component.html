@@ -1,0 +1,119 @@
+<div class="loginCard">
+    <div class="card">
+      <h4 class="card-header text-center">Login</h4>
+      <div class="card-body">
+        <form [formGroup]="myLoginForm" (ngSubmit)="loginSubmit()">
+          <div class="form-group">
+            <label for="userName">User Name</label>
+            <input type="email" class="form-control" id="userName" name="userName" formControlName="userName">
+            <span *ngIf="myLoginForm.get('userName').invalid && myLoginForm.get('userName').touched"
+              class="text-danger form-text">User Name is required</span>
+          </div>
+          <div class="form-group">
+            <label for="loginPassword">Password</label>
+            <input type="text" class="form-control" id="loginPassword" name="loginPassword"
+              formControlName="lgPassword">
+            <span *ngIf="myLoginForm.get('lgPassword').invalid && myLoginForm.get('lgPassword').touched"
+              class="text-danger form-text">Password is required</span>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">login</button>
+          <div class="d-flex justify-content-center mt-2">
+            <span>Not Register Yet?</span>
+            <a href="" data-toggle="modal" data-target="#exampleModal">Register</a>
+          </div>
+          <h6 class="text-center text-danger" *ngIf="errorMsg">{{errorMsg +' Please Login Again'}}</h6>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="myRegistrationForm" (ngSubmit)="registrationSubmit()">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <div class="form-check form-check-inline" *ngFor="let per of registrationType">
+                        <input class="form-check-input" type="radio" name="registType" id="{{per}}" value="{{per}}"
+                            formControlName="registType">
+                        <label class="form-check-label" for="{{per}}">{{per}}</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="fName">First Name</label>
+                    <input type="text" class="form-control" id="fName" name="firstName" formControlName="firstName">
+                    <span
+                        *ngIf="myRegistrationForm.get('firstName').invalid && myRegistrationForm.get('firstName').touched"
+                        class="text-danger form-text">First Name is required</span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="fName">Last Name</label>
+                    <input type="text" class="form-control" id="lName" name="lastName" formControlName="lastName">
+                    <span
+                        *ngIf="myRegistrationForm.get('lastName').invalid && myRegistrationForm.get('lastName').touched"
+                        class="text-danger form-text">Last Name is required</span>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="em">Email</label>
+                    <input type="email" class="form-control" id="em" name="email" formControlName="email">
+                    <span *ngIf="myRegistrationForm.get('email').invalid && myRegistrationForm.get('email').touched"
+                        class="text-danger form-text">Email is required</span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="cont">Contact</label>
+                    <input type="text" class="form-control" id="cont" name="contact" formControlName="contact">
+                    <span *ngIf="myRegistrationForm.get('contact').invalid && myRegistrationForm.get('contact').touched"
+                        class="text-danger form-text">Contact is required</span>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="dep">Department</label>
+                    <select id="dep" class="form-control" name="department" formControlName="department">
+                        <option [disabled]="true">Choose option</option>
+                        <option *ngFor="let dep of departmentType" value="{{dep}}">{{dep}}</option>
+                    </select>
+                    <span
+                        *ngIf="myRegistrationForm.get('department').invalid && myRegistrationForm.get('department').touched"
+                        class="text-danger form-text">Department is required</span>
+                </div>
+            </div>
+  
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="uName">UserName</label>
+                    <input type="text" class="form-control" id="uName" name="firstName" formControlName="userName">
+                    <span
+                        *ngIf="myRegistrationForm.get('userName').invalid && myRegistrationForm.get('userName').touched"
+                        class="text-danger form-text">userName is required</span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="pass">Password</label>
+                    <input type="text" class="form-control" id="pass" name="password" formControlName="userPassword">
+                    <span
+                        *ngIf="myRegistrationForm.get('userPassword').invalid && myRegistrationForm.get('userPassword').touched"
+                        class="text-danger form-text">Password is required</span>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block" [disabled]="myRegistrationForm.invalid">SignUp</button>
+            <div class="d-flex justify-content-center mt-2">
+                <span>Already Register?</span>
+                <a routerLink="" data-dismiss="modal">Login</a>
+            </div>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>

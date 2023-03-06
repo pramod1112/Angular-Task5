@@ -1,0 +1,12 @@
+.form-control.ng-invalid.ng-touched{
+    border: 1px solid red;
+}
+.card{
+    width: 18rem;
+}
+.loginCard{
+    display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
+}
